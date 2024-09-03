@@ -1,47 +1,27 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  },
+  addCart: {
+    type: Function,
+    default: () => {}
+  }
+});
+</script>
 
 <template>
   <!-- Card -->
   <div class="card">
     <div class="card-top">
-      <img
-        src="https://res.cloudinary.com/djvyud0lx/image/upload/v1724144090/product01_t9wo2n.jpg"
-        alt=""
-      />
+      <img :src="props.data.imgUrl" alt="" />
     </div>
     <div class="card-bottom">
-      <h3 class="title">吉伊</h3>
-      <p>chiikawa 娃娃</p>
-      <div class="price">$500</div>
-      <div class="add-cart">加入購物車</div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-top">
-      <img
-        src="https://res.cloudinary.com/djvyud0lx/image/upload/v1724144090/product02_wgo6z8.jpg"
-        alt=""
-      />
-    </div>
-    <div class="card-bottom">
-      <h3 class="title">小八</h3>
-      <p>chiikawa 娃娃</p>
-      <div class="price">$500</div>
-      <div class="add-cart">加入購物車</div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-top">
-      <img
-        src="https://res.cloudinary.com/djvyud0lx/image/upload/v1724144090/product03_vjujwe.jpg"
-        alt=""
-      />
-    </div>
-    <div class="card-bottom">
-      <h3 class="title">烏薩奇</h3>
-      <p>chiikawa 娃娃</p>
-      <div class="price">$500</div>
-      <div class="add-cart">加入購物車</div>
+      <h3 class="title">{{ props.data.title }}</h3>
+      <p>{{ props.data.description }}</p>
+      <div class="price">${{ props.data.price }}</div>
+      <div class="add-cart" @click="props.addCart">加入購物車</div>
     </div>
   </div>
 </template>

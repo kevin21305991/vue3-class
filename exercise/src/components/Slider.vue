@@ -1,15 +1,53 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+const props = defineProps({
+  images: {
+    type: Array,
+    required: true
+  }
+});
+
+let timer = null;
+const activeIndex = ref(0);
+
+const prev = () => {
+  activeIndex.value--;
+  if (activeIndex.value < 0) {
+    activeIndex.value = props.images.length - 1;
+  }
+};
+
+const next = () => {
+  activeIndex.value++;
+  if (activeIndex.value > props.images.length - 1) {
+    activeIndex.value = 0;
+  }
+};
+
+onMounted(() => {
+  timer = setInterval(() => {
+    next();
+  }, 5000);
+});
+
+onUnmounted(() => {
+  clearInterval(timer);
+});
+</script>
 
 <template>
   <div class="slider-wrapper">
     <div class="img-box">
       <img
-        src="https://res.cloudinary.com/djvyud0lx/image/upload/v1724145009/banner01_fky9h7.jpg"
+        v-for="(item, index) in props.images"
+        v-show="activeIndex === index"
+        :key="item.id"
+        :src="item.imgUrl"
         alt=""
       />
     </div>
-    <div class="slider-nav prev"></div>
-    <div class="slider-nav next"></div>
+    <div class="slider-nav prev" @click="prev"></div>
+    <div class="slider-nav next" @click="next"></div>
   </div>
 </template>
 
@@ -42,7 +80,7 @@
       border-radius: 4px 16px 16px 4px;
       box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.5);
       &::before {
-        content: '>';
+        content: '＞';
         color: #000;
         font-weight: bold;
       }
@@ -50,7 +88,7 @@
   }
   .img-box {
     width: 100%;
-    aspect-ratio: 2550/1500;
+    aspect-ratio: 1920/600;
     background-color: #eee;
     border-radius: 16px;
     overflow: hidden;
@@ -58,6 +96,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      user-select: none;
     }
   }
 }
